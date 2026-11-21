@@ -2507,6 +2507,12 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    // hyeonsa host-only build: this machine only accepts incoming connections
+    // (no outgoing sessions / address book UI). Same switch as conn-type=incoming in custom.txt.
+    config::HARD_SETTINGS
+        .write()
+        .unwrap()
+        .insert("conn-type".to_owned(), "incoming".to_owned());
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
